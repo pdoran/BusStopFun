@@ -19,19 +19,23 @@ namespace BusService
         
         static void Main(string[] args)
         {
-            //HostFactory.Run(x =>
-            //    {
-            //        x.Service(settings => new Service("localhost", "fare", 1));
-            //        x.RunAsLocalSystem();
-            //        x.SetDescription("BusStop Service");
-            //        x.SetDisplayName("BusStop");
-            //        x.SetServiceName("BusStop");
-            //    });
-            //var builder = new ContainerBuilder();
+            HostFactory.Run(x => {
+                    x.Service(settings => new Service("localhost", "fare", 1));
+                    x.RunAsLocalSystem();
+                    x.SetDescription("BusStop Service");
+                    x.SetDisplayName("BusStop");
+                    x.SetServiceName("BusStop");
+                });
 
 
-
-            IServiceBus bus = SetupUsingAutoFac("localhost", "fare2", 1);
+            var builder = new ContainerBuilder();
+            builder.RegisterModule(new NoSubscriptionBusModule {
+                Host = "localhost",
+                Queue = "publisher"
+            });
+            IServiceBus bus = builder.Build().Resolve<IServiceBus>();
+            //IServiceBus bus = SetupUsingAutoFac("localhost", "fare2", 1);
+            //IServiceBus bus = SetupUsingWindsor("localhost", "fare2", 1);
             bus.Publish(new FareMessageImpl
             {
                 FareAmount = 10,

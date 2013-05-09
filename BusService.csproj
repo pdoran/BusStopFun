@@ -91,6 +91,7 @@
     <Compile Include="Consumers\Passenger.cs" />
     <Compile Include="Messages\FareMessage.cs" />
     <Compile Include="Messages\FareMessageImpl.cs" />
+    <Compile Include="Modules\NoSubscriptionBusModule.cs" />
     <Compile Include="Modules\RouteOneInstaller.cs" />
     <Compile Include="Modules\RouteOneModule.cs" />
     <Compile Include="Program.cs" />

@@ -25,8 +25,6 @@ namespace BusService
         }
         public bool Start(HostControl hostControl)
         {
-            
-                Thread.Sleep(10000);
                 var builder = new ContainerBuilder();
                 builder.RegisterModule(new RouteOneModule
                 {

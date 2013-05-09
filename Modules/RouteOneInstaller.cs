@@ -23,6 +23,9 @@ namespace BusService.Modules
             XmlConfigurator.Configure();
             //however this does work
             container.Register(Component.For<Passenger>(),
+                Component.For<ILog>().UsingFactoryMethod(()=> {
+                    return LogManager.GetLogger("CoolLogger");
+                }),
              Component.For<IServiceBus>().UsingFactoryMethod(() =>
                     {
                         return ServiceBusFactory.New(sbc =>
