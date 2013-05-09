@@ -28,10 +28,10 @@ namespace BusService
             //        x.SetServiceName("BusStop");
             //    });
             //var builder = new ContainerBuilder();
-            
-            
-            
-            IServiceBus bus = SetupUsingWindsor("localhost", "fare2", 1);
+
+
+
+            IServiceBus bus = SetupUsingAutoFac("localhost", "fare2", 1);
             bus.Publish(new FareMessageImpl
             {
                 FareAmount = 10,

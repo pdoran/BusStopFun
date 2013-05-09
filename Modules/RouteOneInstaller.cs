@@ -21,8 +21,6 @@ namespace BusService.Modules
         public void Install(IWindsorContainer container, Castle.MicroKernel.SubSystems.Configuration.IConfigurationStore store)
         {
             XmlConfigurator.Configure();
-            //this does not work
-            //container.Register(Component.For<IConsumer>().ImplementedBy<Passenger>()
             //however this does work
             container.Register(Component.For<Passenger>(),
              Component.For<IServiceBus>().UsingFactoryMethod(() =>

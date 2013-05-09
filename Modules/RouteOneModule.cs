@@ -21,7 +21,8 @@ namespace BusService.Modules
         {
             XmlConfigurator.Configure();
             //will not work, no consumers actually response to a message with this setup
-            builder.RegisterType<Passenger>().As<IConsumer>();
+            builder.Register(c => LogManager.GetLogger("CoolLogger")).As<ILog>();
+            builder.RegisterType<Passenger>();
             
             builder.Register(c => ServiceBusFactory.New(sbc =>
             {
