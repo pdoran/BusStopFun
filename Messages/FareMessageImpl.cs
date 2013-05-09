@@ -5,7 +5,7 @@ using System.Text;
 
 namespace BusService.Messages
 {
-    class FareMessageImpl : FareMessage
+    public class FareMessageImpl : FareMessage
     {
         public decimal FareAmount { get; set; } 
         public Guid CorrelationId { get; set; }

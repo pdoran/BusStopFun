@@ -6,6 +6,9 @@ using Castle.Windsor;
 using Castle.MicroKernel.Registration;
 using MassTransit;
 using BusService.Consumers;
+using MassTransit.Log4NetIntegration;
+using log4net;
+using log4net.Config;
 
 namespace BusService.Modules
 {
@@ -17,20 +20,24 @@ namespace BusService.Modules
 
         public void Install(IWindsorContainer container, Castle.MicroKernel.SubSystems.Configuration.IConfigurationStore store)
         {
-            // register each consumer manually
+            XmlConfigurator.Configure();
+            //this does not work
+            //container.Register(Component.For<IConsumer>().ImplementedBy<Passenger>()
+            //however this does work
             container.Register(Component.For<Passenger>(),
              Component.For<IServiceBus>().UsingFactoryMethod(() =>
                     {
                         return ServiceBusFactory.New(sbc =>
                             {
                                 sbc.UseRabbitMq();
+                                sbc.UseRabbitMqRouting();
                                 sbc.ReceiveFrom("rabbitmq://" + Host + "/" + Queue);
                                 if (ConsumerCount > 0)
                                 {
                                     sbc.SetConcurrentConsumerLimit(ConsumerCount);
                                 }
-                                sbc.Subscribe(s => s.Consumer<Passenger>());
-                                //sbc.Subscribe(x => x.LoadFrom(container));
+                                sbc.Subscribe(x => x.LoadFrom(container));
+                                sbc.UseLog4Net();
                             });
                     })
                     .LifeStyle.Singleton);

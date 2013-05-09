@@ -10,9 +10,8 @@ namespace BusService.Consumers
 {
     class Passenger : Consumes<FareMessage>.Context
     {
-        public void Consume(IConsumeContext<FareMessage> context)
-        {
-            Console.WriteLine(context.Message.FareAmount);
+        public void Consume(IConsumeContext<FareMessage> message) {
+            Console.WriteLine(message.Message.FareAmount);
             Thread.Sleep(5000);
         }
     }

@@ -28,30 +28,40 @@ namespace BusService
             //        x.SetServiceName("BusStop");
             //    });
             //var builder = new ContainerBuilder();
-            //builder.RegisterModule(new RouteOneModule
-            //{
-            //    Host = "localhost",
-            //    Queue = "fare",
-            //    ConsumerCount = 1
-
-            //});
-            //var container = builder.Build();
-            //IConsumer blah = container.Resolve<IConsumer>();
-            //IServiceBus LocalBus = container.Resolve<IServiceBus>();
-            var container = new WindsorContainer();
-            container.Install(new RouteOneInstaller
-            {
-                Host = "localhost",
-                Queue = "fare",
-                ConsumerCount = 1
-            });
-            IServiceBus bus = container.Resolve<IServiceBus>();
+            
+            
+            
+            IServiceBus bus = SetupUsingWindsor("localhost", "fare2", 1);
             bus.Publish(new FareMessageImpl
             {
                 FareAmount = 10,
                 CorrelationId = Guid.NewGuid()
             });
          }
+
+        static IServiceBus SetupUsingAutoFac(string Host,string Queue,int ConsumerCount) {
+
+            var builder = new ContainerBuilder();
+            builder.RegisterModule(new RouteOneModule {
+                Host = Host,
+                Queue = Queue,
+                ConsumerCount = ConsumerCount
+
+            });
+            var container = builder.Build();
+            return container.Resolve<IServiceBus>();
+        }
+
+        static IServiceBus SetupUsingWindsor(string Host, string Queue, int ConsumerCount) {
+
+            var container = new WindsorContainer();
+            container.Install(new RouteOneInstaller {
+                Host = Host,
+                Queue = Queue,
+                ConsumerCount = ConsumerCount
+            });
+            return container.Resolve<IServiceBus>();
+        }
        
     }
 }

@@ -5,7 +5,7 @@ using System.Text;
 using MassTransit;
 namespace BusService.Messages
 {
-    interface FareMessage : CorrelatedBy<Guid>
+    public interface FareMessage : CorrelatedBy<Guid>
     {
         decimal FareAmount { get; set; }
     }
